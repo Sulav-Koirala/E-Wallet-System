@@ -32,3 +32,12 @@ def update_details(username,phone_no,address,user_id):
     with connection.cursor() as cursor:
         cursor.execute('''UPDATE ewallet_customuser SET username=%s,
             phone_number=%s, address=%s WHERE id=%s''', [username,phone_no,address,user_id])
+        
+def get_details(columns,user_id):
+    with connection.cursor() as cursor:
+        cursor.execute(f"SELECT {', '.join(columns)} FROM ewallet_customuser WHERE id=%s", [user_id])
+        return cursor.fetchone()
+    
+def delete_user(user_id):
+    with connection.cursor() as cursor:
+        cursor.execute("DELETE FROM ewallet_customuser WHERE id=%s", [user_id])

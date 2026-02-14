@@ -10,7 +10,22 @@ def register_user(request):
 def login_user(request):
     return user_services.login_user(request)
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def view_user(request):
+    return user_services.view_user(request)
+
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def update_user(request):
     return user_services.update_user_details(request)
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_user(request):
+    return user_services.delete_user(request)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def logout_user(request):
+    return user_services.logout_user(request)

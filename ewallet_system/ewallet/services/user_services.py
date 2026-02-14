@@ -1,8 +1,8 @@
 from rest_framework import status
 from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password,check_password
-from django.contrib.auth import login
-from rest_framework.exceptions import ValidationError,AuthenticationFailed
+from django.contrib.auth import login,logout
+from rest_framework.exceptions import ValidationError,AuthenticationFailed,APIException
 from django.core.validators import RegexValidator
 from ewallet.repository import user_repo
 
@@ -33,7 +33,7 @@ def create_new_user(request):
     try:
         user_repo.create_user(username,email,hashed_pwd,firstname,lastname,phone_no,address)
     except Exception as e:
-        raise ValidationError({'error': str(e)})
+        raise APIException({'error': str(e)})
     
     return Response({
         'message' : 'User created successfully'
@@ -61,6 +61,14 @@ def login_user(request):
     return Response({'message' : 'Login successful'})
 
 
+def view_user(request):
+    columns_to_select = ["username","email","first_name","last_name","phone_number","address"]
+    row = user_repo.get_details(columns_to_select,request.user.id)
+    result_dict = dict(zip(columns_to_select,row))
+
+    return Response(result_dict)
+
+
 def update_user_details(request):
     required_fields = ['username','password', 'phone_number', 'address']
     missing = [field for field in required_fields if not request.data.get(field)]
@@ -85,3 +93,15 @@ def update_user_details(request):
     user_repo.update_details(username,phone_no,address,request.user.id)
     
     return Response({'message':'Successfully updated user info'})
+
+
+def delete_user(request):
+    try:
+        user_repo.delete_user(request.user.id)
+    except Exception as e:
+        raise APIException({'error': str(e)})
+    return Response({'message': 'Successfully deleted account'})
+
+def logout_user(request):
+    logout(request)
+    return Response({'message': 'User logged out, log in again to access'})
