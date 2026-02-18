@@ -1,5 +1,5 @@
 from rest_framework.decorators import api_view,permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from ewallet.services import user_services
 
 @api_view(['POST'])
@@ -21,7 +21,7 @@ def update_user(request):
     return user_services.update_user_details(request)
 
 @api_view(['DELETE'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAdminUser])
 def delete_user(request):
     return user_services.delete_user(request)
 

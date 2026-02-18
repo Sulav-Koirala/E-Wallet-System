@@ -8,7 +8,7 @@ class CustomUser(AbstractUser):
     phone_number = models.CharField(max_length=15,null=False,unique=True,validators=[RegexValidator(regex=r'^\+977-9\d{9}$')])
     address = models.CharField(max_length=50,null=False)
     USERNAME_FIELD = "email" 
-    REQUIRED_FIELDS = ["phone_number"]
+    REQUIRED_FIELDS = ["phone_number","username"]
 
     def __str__(self):
         return self.email

@@ -96,8 +96,9 @@ def update_user_details(request):
 
 
 def delete_user(request):
+    user_id = request.data.get("user_id")
     try:
-        user_repo.delete_user(request.user.id)
+        user_repo.delete_user(user_id)
     except Exception as e:
         raise APIException({'error': str(e)})
     return Response({'message': 'Successfully deleted account'})
