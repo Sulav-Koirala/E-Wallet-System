@@ -16,6 +16,11 @@ def select_wallet_by_id(user_id):
         column = [col[0] for col in cursor.description]
         return column,row
 
-def deactivate_wallet(user_id):
+def change_wallet_status(user_id,status):
     with connection.cursor() as cursor:
-        cursor.execute('UPDATE wallet SET status=%s WHERE user_id=%s',['INACTIVE',user_id])
+        cursor.execute('UPDATE wallet SET status=%s WHERE user_id=%s',[status,user_id])
+
+def get_status(user_id):
+    with connection.cursor() as cursor:
+        cursor.execute('SELECT status FROM wallet WHERE user_id=%s',[user_id])
+        return cursor.fetchone()[0]

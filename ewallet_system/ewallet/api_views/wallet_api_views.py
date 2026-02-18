@@ -14,5 +14,5 @@ def view_wallet_details(request):
 
 @api_view(['PUT'])
 @permission_classes([IsAdminUser])
-def deactivate_wallet(request):
+def wallet_status(request):
     return wallet_services.update_wallet(request)

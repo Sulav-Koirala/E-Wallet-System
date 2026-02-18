@@ -22,8 +22,15 @@ def get_wallet_details(request):
 
 def update_wallet(request):
     user_id = request.data.get("user_id")
+    status = request.data.get("status")
+    wallet_exists = wallet_repo.check_wallet_existance(user_id)
+    if not wallet_exists:
+        raise ValidationError("This user doesn't have a wallet") 
+    current_status = wallet_repo.get_status(user_id)
+    if current_status==status:
+        raise ValidationError(f"Couldn't change status as this wallet is currently {status}")
     try:
-        wallet_repo.deactivate_wallet(user_id)
+        wallet_repo.change_wallet_status(user_id,status)
     except Exception as e:
         raise APIException({'error':str(e)})
-    return Response({'message':'Wallet deactivated'})
+    return Response({'message':'Wallet status successfully changed'})
