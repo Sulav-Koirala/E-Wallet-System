@@ -18,9 +18,10 @@ def create_Transaction():
             CREATE TABLE IF NOT EXISTS transaction(
                 wallet_id INT NOT NULL REFERENCES wallet(wallet_id) ON DELETE CASCADE,
                 transaction_id SERIAL PRIMARY KEY,
-                status VARCHAR(10) NOT NULL DEFAULT 'PENDING' CHECK (status IN ('COMPLETED','PENDING')),
-                type VARCHAR(6) NOT NULL CHECK (type IN ('DEPOSITE', 'TRANSFER')),
+                status VARCHAR(10) NOT NULL CHECK (status IN ('COMPLETED','FAILED')),
+                type VARCHAR(8) NOT NULL CHECK (type IN ('DEPOSITE', 'TRANSFER')),
                 amount NUMERIC(10,2) NOT NULL,
+                reference_id UUID UNIQUE NOT NULL,
                 timestamp TIMESTAMPTZ NOT NULL DEFAULT NOW())
             ''')
 
@@ -31,7 +32,8 @@ def create_Notifications():
                 user_id INT NOT NULL REFERENCES ewallet_customuser(id) ON DELETE CASCADE,
                 notification_id SERIAL PRIMARY KEY,
                 message VARCHAR(100) NOT NULL,
-                type VARCHAR(10) NOT NULL CHECK (type IN ('TRANSACTION', 'SYSTEM', 'ERROR')),
+                type VARCHAR(12) NOT NULL CHECK (type IN ('TRANSACTION', 'SYSTEM', 'ERROR')),
                 seen BOOLEAN NOT NULL DEFAULT FALSE, 
+                reference_id UUID,
                 created_at TIMESTAMPTZ NOT NULL DEFAULT NOW())
             ''')
