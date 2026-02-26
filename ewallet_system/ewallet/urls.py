@@ -2,6 +2,7 @@ from django.urls import path
 from ewallet.api_views.user_api_views import register_user,login_user,update_user,view_user,delete_user,logout_user
 from ewallet.api_views.wallet_api_views import create_wallet,view_wallet_details,wallet_status
 from ewallet.api_views.transaction_api_views import load_wallet,transfer_money,view_transaction_statement
+from ewallet.api_views.notification_api_views import create_notification,seen_notification,view_all_notifications
 
 urlpatterns = [
     path("user/register/", register_user, name='register'),
@@ -16,4 +17,7 @@ urlpatterns = [
     path("transaction/load/", load_wallet, name='load_wallet'),
     path("transaction/transfer/<int:wallet_id>/", transfer_money, name='transfer_money'),
     path("transaction/statement/", view_transaction_statement, name='statements'),
+    path("notification/send/", create_notification, name='send_notification'),
+    path("notification/see/<int:notification_id>/", seen_notification, name="see_notification"),
+    path("notification/view/", view_all_notifications, name="view_notifications"),
 ]
