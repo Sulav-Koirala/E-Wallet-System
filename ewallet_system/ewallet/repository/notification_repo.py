@@ -22,6 +22,6 @@ def see_notification(notification_id):
 def get_all_notifications(user_id):
     with connection.cursor() as cursor:
         cursor.execute('UPDATE notification SET seen=%s WHERE user_id=%s',[True,user_id])
-        cursor.execute('SELECT notification_id,message,type,created_at FROM notification WHERE user_id=%s',[user_id])
+        cursor.execute('SELECT notification_id,message,type,created_at FROM notification WHERE user_id=%s ORDER BY created_at DESC',[user_id])
         return cursor.fetchall()
 
