@@ -28,8 +28,12 @@ def transfer_money(sender_user_id, receiver_user_id, sender_wallet_id, receiver_
         cursor.execute('''INSERT INTO notification (user_id,message,type,reference_id)
                         VALUES (%s,%s,%s,%s)''', [receiver_user_id,f"Received NRs. {transfer_amount} from wallet {sender_wallet_id} successfully","TRANSACTION",reference_id])
 
-# def get_transaction_history(wallet_id):
-#     with connection.cursor() as cursor:
-#         cursor.execute('SELECT * FROM transaction WHERE wallet_id=%s',[wallet_id])
-#         return cursor.fetchall()
-
+def get_transaction_history(wallet_id):
+    with connection.cursor() as cursor:
+        cursor.execute('''SELECT t.transaction_id,t.status,t.type,t.amount,t.reference_id,su.username AS sender,ru.username AS receiver,t.timestamp AS transaction_date
+                        FROM transaction t JOIN transaction t2 ON t.reference_id = t2.reference_id AND t.wallet_id <> t2.wallet_id
+                        JOIN wallet sw ON ((t.type = 'TRANSFER' AND sw.wallet_id = t.wallet_id) OR (t.type = 'DEPOSITE' AND sw.wallet_id = t2.wallet_id))
+                        JOIN wallet rw ON ((t.type = 'TRANSFER' AND rw.wallet_id = t2.wallet_id) OR (t.type = 'DEPOSITE' AND rw.wallet_id = t.wallet_id))
+                        JOIN ewallet_customuser su ON su.id = sw.user_id JOIN ewallet_customuser ru ON ru.id = rw.user_id
+                        WHERE t.wallet_id = %s ORDER BY t.timestamp DESC''',[wallet_id])
+        return cursor.fetchall()

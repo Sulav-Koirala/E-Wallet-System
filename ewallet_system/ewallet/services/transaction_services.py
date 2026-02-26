@@ -1,7 +1,6 @@
 from rest_framework.exceptions import APIException,ValidationError
 from ewallet.repository import transaction_repo,wallet_repo
 from rest_framework.response import Response
-from rest_framework import status
 import uuid
 
 def req_fields(request):
@@ -57,8 +56,16 @@ def transfer_money(request,wallet_id):
         raise APIException({'error': str(e)})
     return Response({'message': 'Transfer successful'})
 
-# def view_statements(request):
-#     keys = ["transaction_id","status","type","amount","reference_id","transaction_date"]
-#     user_wallet = check_wallet_validity(request.user.id)
-#     rows = transaction_repo.get_transaction_history(user_wallet)
-#     transactions = [{""}]
+def view_statements(request):
+    if request.user.is_superuser:
+        return Response({'message': 'admins cannot view their statement'})
+    keys = ["transaction_id","status","type","amount","reference_id","sender","receiver","transaction_date"]
+    user_wallet = check_wallet_validity(request.user.id)
+    try:
+        rows = transaction_repo.get_transaction_history(user_wallet)
+        transactions = []
+        for row in rows:
+            transactions.append(dict(zip(keys,row)))
+        return Response(transactions)
+    except Exception as e:
+        raise APIException({'error': str(e)})

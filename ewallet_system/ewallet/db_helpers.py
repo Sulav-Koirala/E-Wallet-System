@@ -21,7 +21,7 @@ def create_Transaction():
                 status VARCHAR(10) NOT NULL CHECK (status IN ('COMPLETED','FAILED')),
                 type VARCHAR(8) NOT NULL CHECK (type IN ('DEPOSITE', 'TRANSFER')),
                 amount NUMERIC(10,2) NOT NULL,
-                reference_id UUID UNIQUE NOT NULL,
+                reference_id UUID NOT NULL,
                 timestamp TIMESTAMPTZ NOT NULL DEFAULT NOW())
             ''')
 
