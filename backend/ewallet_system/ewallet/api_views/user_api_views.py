@@ -1,12 +1,16 @@
-from rest_framework.decorators import api_view,permission_classes
-from rest_framework.permissions import IsAuthenticated,IsAdminUser
+from rest_framework.decorators import api_view,permission_classes,authentication_classes
+from rest_framework.permissions import IsAuthenticated,IsAdminUser,AllowAny
 from ewallet.services import user_services
 
 @api_view(['POST'])
+@authentication_classes([])
+@permission_classes([AllowAny])
 def register_user(request):
     return user_services.create_new_user(request)
 
 @api_view(['POST'])
+@authentication_classes([])
+@permission_classes([AllowAny])
 def login_user(request):
     return user_services.login_user(request)
 
