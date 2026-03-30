@@ -58,7 +58,9 @@ def login_user(request):
     user = user_repo.get_user_object(user_id)
     login(request, user)
 
-    return Response({'message' : 'Login successful'})
+    return Response({'message' : 'Login successful',
+                     'admin_user' : request.user.is_staff,
+                     'username' : request.user.username})
 
 
 def view_user(request):
@@ -89,9 +91,12 @@ def update_user_details(request):
    
     if not check_password(password,hashed_pwd):
         hash_password=make_password(password)
-        user_repo.update_password(hash_password,request.user.id)   
-    user_repo.update_details(username,phone_no,address,request.user.id)
-    
+        user_repo.update_password(hash_password,request.user.id)  
+    try: 
+        user_repo.update_details(username,phone_no,address,request.user.id)
+    except Exception as e:
+        raise APIException({'error': str(e)})
+
     return Response({'message':'Successfully updated user info'})
 
 

@@ -128,3 +128,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 SESSION_COOKIE_AGE = int(config('SESSION_EXPIRE'))
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+]

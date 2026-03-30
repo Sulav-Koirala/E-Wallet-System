@@ -1,6 +1,7 @@
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import '../styles/login.css'
 import { Link, useNavigate } from 'react-router-dom'
+import { getCookie,setCookie } from "../Utils";
 
 export default function Login(){
     const [email,setEmail] = useState('');
@@ -9,6 +10,10 @@ export default function Login(){
     const [success,setSuccess] = useState('');
 
     const navigate = useNavigate();
+    useEffect(() => {
+    const isAuthenticated = getCookie("isAuthenticated");
+    if (isAuthenticated === "true") {
+      navigate("/home");}},[]);
 
     const changeEmail = (e) => {
         const {value} = e.target;
@@ -42,6 +47,9 @@ export default function Login(){
 
         if (res.ok) {
             setSuccess(data.message);
+            setCookie("admin_user", String(data.admin_user));
+            setCookie("isAuthenticated", "true");
+            setCookie("username", data.username);
             setTimeout(() => navigate('/home'), 1500);
         } else {
             setError(data.error || 'Something went wrong'); 
