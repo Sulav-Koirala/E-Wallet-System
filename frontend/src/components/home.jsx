@@ -1,6 +1,13 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getCookie,getCSRF } from '../Utils'
+import styles from '../styles/home.module.css'
+
+function CreateButton(props){
+    return (
+        <button className={styles.button} onClick={props.onClick}>{props.label}</button>
+    )
+}
 
 export default function Home(){
     const username = getCookie("username");
@@ -65,30 +72,33 @@ export default function Home(){
     };
     
     return(
-        <>
-            <p>Welcome, {username}</p>
-            <button onClick={handlelogout}>Log Out</button>
+        <div className={styles.body}>
+            <div className={styles.header}>
+                <h3 className={styles.title}>Welcome, {username}</h3>
+                <CreateButton onClick={handlelogout} label="Log Out" />
+            </div>
             {profile === null ? (
-            <>
-                <p>Services: </p>
-                <button onClick={handleProfile}>View User Profile</button>
-                <button onClick={handleUpdate}>Update User Profile</button>
-                <button onClick={handleWallet}>Wallet</button>
-            </>
+            <div className={styles.services}>
+                <h3 className={styles.title}>Services: </h3>
+                <CreateButton onClick={handleProfile} label="View User Profile" />
+                <CreateButton onClick={handleUpdate} label="Update User Profile" />
+                <CreateButton onClick={handleWallet} label="Wallet" />
+            </div>
             ) : (
-            <>
-                <h3>User Profile</h3>
-                <p>First Name: {profile.first_name}</p>
-                <p>Last Name: {profile.last_name}</p>
-                <p>Username: {profile.username}</p>
-                <p>Email: {profile.email}</p>
-                <p>Phone Number: {profile.phone_number}</p>
-                <p>Address: {profile.address}</p>
-
-                <button onClick={() => setProfile(null)}>Back</button>
-            </>
+            <div className={styles.profile}>
+                <h3 className={styles.title}>User Profile</h3>
+                <div style={{display:"grid", gridTemplateColumns: "repeat(2,1fr)", gridTemplateRows: "repeat(6,1fr)", gap:"5px", margin:"10px"}}>
+                <span style={{fontWeight: "bold"}}>First Name: </span><p>{profile.first_name}</p>
+                <span style={{fontWeight: "bold"}}>Last Name: </span><p>{profile.last_name}</p>
+                <span style={{fontWeight: "bold"}}>Username: </span><p>{profile.username}</p>
+                <span style={{fontWeight: "bold"}}>Email: </span><p>{profile.email}</p>
+                <span style={{fontWeight: "bold"}}>Phone Number: </span><p>{profile.phone_number}</p>
+                <span style={{fontWeight: "bold"}}>Address: </span><p>{profile.address}</p>
+                </div>
+                <CreateButton onClick={() => setProfile(null)} label="Back" />
+            </div>
             )}
             {error && <p style={{backgroundColor: '#fc4a4d', borderRadius: '5px', padding: '5px'}}>{error}</p>}
-        </>
+        </div>
     );
 };

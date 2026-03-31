@@ -1,7 +1,7 @@
 import { useState,useEffect } from "react"
-import '../styles/login.css'
+import styles from '../styles/auth.module.css'
 import { Link, useNavigate } from 'react-router-dom'
-import { getCookie,setCookie } from "../Utils";
+import { getCookie } from "../Utils";
 
 export default function Login(){
     const [email,setEmail] = useState('');
@@ -47,9 +47,6 @@ export default function Login(){
 
         if (res.ok) {
             setSuccess(data.message);
-            setCookie("admin_user", String(data.admin_user));
-            setCookie("isAuthenticated", "true");
-            setCookie("username", data.username);
             setTimeout(() => navigate('/home'), 1500);
         } else {
             setError(data.error || 'Something went wrong'); 
@@ -57,16 +54,18 @@ export default function Login(){
     };
 
     return (
-        <div className="container">
-            <h1>Welcome back!</h1>
-            <form onSubmit={handleSubmit}>
-            <label>Email: </label><input type="email" value={email} onChange={changeEmail} placeholder="Enter email address..."  required />
-            <label>Password: </label><input type="password" value={pwd} onChange={changePwd} placeholder="Enter password..." required />
-            <button type="submit">Sign In</button>
+        <div className={styles.body}>
+        <div className={styles.container}>
+            <h1 className={styles.title}>Welcome back!</h1>
+            <form className={styles.form} onSubmit={handleSubmit}>
+            <label>Email: </label><input className={styles.input} type="email" value={email} onChange={changeEmail} placeholder="Enter email address..."  required />
+            <label>Password: </label><input className={styles.input} type="password" value={pwd} onChange={changePwd} placeholder="Enter password..." required />
+            <button className={styles.button} type="submit">Sign In</button>
             </form>
             <p>Don't have an account? <Link to="/register" style={{color: '#7c3aed'}}>Sign up</Link></p>
             {error && <p style={{backgroundColor: '#fc4a4d', borderRadius: '5px', padding: '5px'}}>{error}</p>}
             {success && <p style={{backgroundColor: '#79f341', borderRadius: '5px', padding: '5px'}}>{success}</p>}
+        </div>
         </div>
     );
 };

@@ -58,9 +58,12 @@ def login_user(request):
     user = user_repo.get_user_object(user_id)
     login(request, user)
 
-    return Response({'message' : 'Login successful',
-                     'admin_user' : request.user.is_staff,
-                     'username' : request.user.username})
+    response = Response({'message' : 'Login successful'})
+    response.set_cookie("admin_user", str(user.is_staff), max_age=1800)
+    response.set_cookie("isAuthenticated", "true", max_age=1800)
+    response.set_cookie("username", user.username, max_age=1800)
+    return response
+
 
 
 def view_user(request):

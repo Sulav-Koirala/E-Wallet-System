@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { getCSRF } from '../Utils'
-
+import styles from '../styles/auth.module.css'
 
 export default function Update(){
     const [input,setInput] = useState({
@@ -56,18 +56,20 @@ export default function Update(){
     };
 
     return (
-        <div className="container">
-            <h1>Update Profile</h1>
-            <form onSubmit={handleSubmit}>
-                <label>Username: </label><input type="text" name="username" value={input.username} onChange={changeInput} placeholder="Enter new username..."  required />
-                <label>Password: </label><input type="password" name="password" value={input.password} onChange={changeInput} placeholder="Enter new password..." required />
-                <label>Phone Number: </label><input type="tel" name="phone_number" value={input.phone_number} onChange={changeInput} placeholder="Enter new phone no..." required />
-                <label>Address: </label><input type="text" name="address" value={input.address} onChange={changeInput} placeholder="Enter new address..." required />
-                <button type="submit">Update</button>
+        <div className={styles.body}>
+        <div className={styles.container}>
+            <h1 className={styles.title}>Update Profile</h1>
+            <form className={styles.form} onSubmit={handleSubmit}>
+                <label>Username: </label><input className={styles.input} type="text" name="username" value={input.username} onChange={changeInput} placeholder="Enter new username..."  required />
+                <label>Password: </label><input className={styles.input} type="password" name="password" value={input.password} onChange={changeInput} placeholder="Enter new password..." required />
+                <label>Phone Number: </label><input className={styles.input} type="tel" name="phone_number" value={input.phone_number} onChange={changeInput} placeholder="Enter new phone no..." required />
+                <label>Address: </label><input className={styles.input} type="text" name="address" value={input.address} onChange={changeInput} placeholder="Enter new address..." required />
+                <button className={styles.button} type="submit">Update</button>
             </form>
             <p><Link to="/home" style={{color: '#7c3aed'}}>Back</Link></p>
             {error && <p style={{backgroundColor: '#fc4a4d', borderRadius: '5px', padding: '5px'}}>{error}</p>}
             {success && <p style={{backgroundColor: '#79f341', borderRadius: '5px', padding: '5px'}}>{success}</p>}
         </div>
-    )
+        </div>
+    );
 };

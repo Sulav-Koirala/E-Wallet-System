@@ -6,11 +6,6 @@ export function getCookie(name){
     );
 }
 
-export function setCookie(name, value, days = 7) {
-  const expires = new Date(Date.now() + days * 864e5).toUTCString();
-  document.cookie = `${name}=${encodeURIComponent(String(value))}; expires=${expires}; path=/`;
-}
-
 export default function ProtectedRoute({ children }) {
     const isAuthenticated = getCookie("isAuthenticated") === "true";
 
