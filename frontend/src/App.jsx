@@ -4,6 +4,7 @@ import Register from './components/register'
 import Home from './components/home'
 import Update from './components/update'
 import Wallet from './components/wallet'
+import Notification from './components/notification'
 import ProtectedRoute from './Utils'
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
                 <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
                 <Route path="/update" element={<ProtectedRoute><Update /></ProtectedRoute>} />
                 <Route path="/wallet" element={<ProtectedRoute><Wallet /></ProtectedRoute>} />
+                <Route path="/notifications" element={<ProtectedRoute><Notification /></ProtectedRoute>} />
             </Routes>
         </BrowserRouter>
     );

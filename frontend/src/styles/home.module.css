@@ -22,7 +22,7 @@
 
 .header {
     animation: cardIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-    width: 50%;
+    width: 700px;
     background: linear-gradient(135deg, #d5ebbe, #8c8eb4);
     padding: 10px;
     border: 2px solid black;
@@ -34,14 +34,18 @@
 
 .services {
     animation: cardIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-    width: 50%;
-    height: 40%;
+    width: 700px;
     background: linear-gradient(135deg, #d5ebbe, #8c8eb4);
     padding: 10px;
     border: 2px solid black;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
+}
+
+.wideservices {
+    composes: services;
+    height: 50%;
 }
 
 .services p {
