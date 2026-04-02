@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { getCSRF } from '../Utils'
 import styles from '../styles/auth.module.css'
 
@@ -9,6 +9,7 @@ export default function Update(){
     });
     const [error,setError] = useState('');
     const [success,setSuccess] = useState('');
+    const navigate = useNavigate();
 
     const changeInput = (e) => {
         const {name,value} = e.target;
@@ -51,7 +52,10 @@ export default function Update(){
         if (!res.ok)  {
             setError(data.error || 'Something went wrong');
         } else {
-            setSuccess(data.message);
+            setSuccess(data.message + ". Login again.");
+            setTimeout(() => {["isAuthenticated", "admin_user", "username", "csrftoken"].forEach(name => {
+                document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+            }); navigate("/");}, 2000);
         };
     };
 
