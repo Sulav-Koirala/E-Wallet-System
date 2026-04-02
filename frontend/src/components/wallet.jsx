@@ -123,7 +123,7 @@ export default function Wallet(){
     }
 
     return(<div className={styles.body}>
-        {success && <p style={{backgroundColor: '#5cfc4a', borderRadius: '10px', padding: '10px'}}>{success}</p>}
+        {success=='Wallet created successfully' && <p style={{backgroundColor: '#5cfc4a', borderRadius: '10px', padding: '10px'}}>{success}</p>}
         {error=='This user has no wallet currently' && <div className="errorClass">
         <p style={{backgroundColor: '#fc4a4d', borderRadius: '10px', padding: '10px', fontSize: "30px"}}>{error}</p>
         <CreateButton onClick={createWallet} label='Create New Wallet' /></div>}
@@ -170,7 +170,7 @@ export default function Wallet(){
                 {success && <p style={{backgroundColor: '#79f341', borderRadius: '5px', padding: '5px'}}>{success}</p>}
             </div>
         </div>}
-        {activePanel === 'view' && 
+        {activePanel === 'history' && 
         <div className={styles.profile}>
             <h3 className={styles.title}>Transaction Statement</h3>
             <div style={{display:"grid", gridTemplateColumns: "repeat(2,1fr)", gridTemplateRows: "repeat(6,1fr)", gap:"5px", margin:"10px"}}>
