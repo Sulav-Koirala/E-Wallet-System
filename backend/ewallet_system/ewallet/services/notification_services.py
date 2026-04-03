@@ -28,10 +28,12 @@ def seen_notification(request,notification_id):
     if user_notification_exists != request.user.id:
         raise ValidationError({'error': 'you do not have a notification of this id'})
     try:
-        notification_repo.see_notification(notification_id)
+        column = ["notification_id","message","type","created_at"]
+        row = notification_repo.see_notification(notification_id)
+        result = dict(zip(column,row))
+        return Response(result)
     except Exception as e:
         raise APIException({'error': str(e)})
-    return Response({'message': 'Notification Seen'})
 
 def view_notification(request):
     column = ["notification_id","message","type","created_at"]

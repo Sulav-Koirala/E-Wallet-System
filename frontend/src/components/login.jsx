@@ -47,7 +47,7 @@ export default function Login(){
 
         if (res.ok) {
             setSuccess(data.message);
-            setTimeout(() => navigate('/home'), 1500);
+            setTimeout(() => navigate('/home'), 1000);
         } else {
             setError(data.error || 'Something went wrong'); 
         }
