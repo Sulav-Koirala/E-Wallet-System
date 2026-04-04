@@ -25,10 +25,10 @@ def update_wallet(request):
     status = request.data.get("status")
     wallet_exists = wallet_repo.check_wallet_existance(user_id)
     if not wallet_exists:
-        raise ValidationError("This user doesn't have a wallet") 
+        raise ValidationError({'error': "This user doesn't have a wallet"}) 
     current_status = wallet_repo.get_status(user_id)
     if current_status==status:
-        raise ValidationError(f"Couldn't change status as this wallet is currently {status}")
+        raise ValidationError({'error': f"Couldn't change status as this wallet is currently {status}"})
     try:
         wallet_repo.change_wallet_status(user_id,status)
     except Exception as e:

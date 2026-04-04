@@ -14,6 +14,9 @@ export default function Home(){
     const navigate = useNavigate();
     const [error,setError] = useState('');
     const [profile,setProfile] = useState(null);
+    const admin_user = getCookie("admin_user");
+    const [activePanel,setActivePanel] = useState('home');
+    const [userId, setUserId] = useState('');
 
     const handlelogout = async () => {
         setError('');
@@ -70,6 +73,31 @@ export default function Home(){
     const handleWallet = () => {
         navigate("/wallet");
     };
+
+    const handleDelete = async (e) => {
+        e.preventDefault();
+        setError('');
+        if (!userId) {
+        setError('Please enter a user ID');
+        return;
+        };
+        const res = await fetch('http://localhost:8000/ewallet/user/delete/', {
+            method: 'DELETE', credentials: 'include',
+            headers: { "Content-Type": "application/json", 'X-CSRFToken': getCSRF() },
+            body: JSON.stringify({ user_id: Number(userId) })
+        });
+        let data;
+        try { data = await res.json(); }
+        catch { setError(`Server error: ${res.status} ${res.statusText}`); return; }
+        console.log(res.status);
+        console.log(data);
+        if (!res.ok) {
+            setError(data.error || 'Something went wrong');
+        } else {
+            setUserId('');
+            setActivePanel('home'); 
+        }
+    };
     
     return(
         <div className={styles.body}>
@@ -77,12 +105,22 @@ export default function Home(){
                 <h3 className={styles.title}>Welcome, {username}</h3>
                 <CreateButton onClick={handlelogout} label="Log Out" />
             </div>
-            {profile === null ? (
+            {profile === null && activePanel === 'home' ? (
             <div className={styles.services}>
                 <h3 className={styles.title}>Services: </h3>
                 <CreateButton onClick={handleProfile} label="View User Profile" />
                 <CreateButton onClick={handleUpdate} label="Update User Profile" />
                 <CreateButton onClick={handleWallet} label="Wallet" />
+                {admin_user === "True" && <CreateButton onClick={() => setActivePanel('delete')} label="Delete a User" />}
+            </div>
+            ) : activePanel === 'delete' ? (
+            <div className={styles.profile}>
+                <h3 className={styles.title}>Delete a User</h3>
+                <div style={{display:"grid", gridTemplateRows: "repeat(2,1fr)", gap:"5px", margin:"10px"}}>
+                    <input className={styles.input} type="number" value={userId} onChange={(e) => setUserId(e.target.value)} placeholder="Enter user ID..." required/>
+                    <CreateButton onClick={handleDelete} label="Delete User" />
+                </div>      
+                <CreateButton onClick={() => setActivePanel('home')} label="Back" />
             </div>
             ) : (
             <div className={styles.profile}>

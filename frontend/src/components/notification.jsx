@@ -32,12 +32,12 @@ export default function Notification() {
 
     return (
         <div className={styles.body}>
-            {error && <p style={{backgroundColor: '#fc4a4d', borderRadius: '5px', padding: '5px'}}>{error}</p>}
             <div className={styles.header}>
                 <div className={styles.title}>Notifications</div>
                 <button className={styles.button} onClick={handleReturn}>Back</button>
             </div>
             <div className={styles.container}>
+            {error && <p style={{backgroundColor: '#fc4a4d', borderRadius: '5px', padding: '5px'}}>{error}</p>}
             {notification && notification.map((n) => (<div key={n.notification_id} style={{display:"grid", gridTemplateColumns: "repeat(2,1fr)", gridTemplateRows: "repeat(4,1fr)", gap:"5px", margin:"10px"}}>
             <span style={{fontWeight: "bold"}}>Notification ID: </span><p>{n.notification_id}</p>
             <span style={{fontWeight: "bold"}}>Message: </span><p>{n.message}</p>

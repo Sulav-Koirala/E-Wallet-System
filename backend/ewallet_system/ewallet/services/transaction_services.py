@@ -58,7 +58,7 @@ def transfer_money(request,wallet_id):
 
 def view_statements(request):
     if request.user.is_superuser:
-        return Response({'message': 'admins cannot view their statement'})
+        return Response({'error': 'Admins cannot view their statement'}, status=403)
     keys = ["transaction_id","status","type","amount","reference_id","sender","receiver","transaction_date"]
     user_wallet = check_wallet_validity(request.user.id)
     try:

@@ -14,7 +14,7 @@ def create_notification(request):
     message = request.data["message"]
     check_user_exists = notification_repo.check_user(user_id)
     if not check_user_exists:
-        raise ValidationError({'error':f'no such user of id {user_id}'})
+        raise ValidationError({'error':f'no such user of id {user_id} exists'})
     try:
         notification_repo.send_notification(user_id,message)
     except Exception as e:
@@ -37,13 +37,10 @@ def seen_notification(request,notification_id):
 
 def view_notification(request):
     column = ["notification_id","message","type","created_at"]
-    try:
-        rows = notification_repo.get_all_notifications(request.user.id)
-        if not rows:
-            raise ValidationError({'error':'no notifications till now'})
-        notifications = []
-        for row in rows:
-            notifications.append(dict(zip(column,row)))
-        return Response(notifications)
-    except Exception as e:
-        raise APIException({'error': str(e)})
+    rows = notification_repo.get_all_notifications(request.user.id)
+    if not rows:
+        raise ValidationError({'error':'No notifications till now'})
+    notifications = []
+    for row in rows:
+        notifications.append(dict(zip(column,row)))
+    return Response(notifications)

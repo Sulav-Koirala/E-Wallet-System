@@ -22,7 +22,10 @@ def check_credentials(email):
         return cursor.fetchone()
     
 def get_user_object(user_id):
-    return User.objects.get(id=user_id)
+    try:
+        return User.objects.get(id=user_id)
+    except:
+        return None
 
 def update_password(hash_password,user_id):
     with connection.cursor() as cursor:

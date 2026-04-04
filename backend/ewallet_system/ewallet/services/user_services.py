@@ -105,6 +105,9 @@ def update_user_details(request):
 
 def delete_user(request):
     user_id = request.data.get("user_id")
+    user = user_repo.get_user_object(user_id)
+    if user is None:
+        return Response({'error': "User doesn't exist"}, status=403)
     try:
         user_repo.delete_user(user_id)
     except Exception as e:
