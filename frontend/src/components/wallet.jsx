@@ -193,14 +193,13 @@ export default function Wallet() {
                 {activePanel === null &&
                     <div className={styles.wideservices}>
                         <h3 className={styles.title}>Services:</h3>
-                        {admin_user==='True' && <CreateButton onClick={() => {setError(''); setActivePanel('load_wallet')}} label="Load Wallet" />}
+                        {admin_user==='True' && <CreateButton onClick={() => {setError(''); setSuccess(''); setActivePanel('load_wallet')}} label="Load Wallet" />}
                         <CreateButton onClick={() => setActivePanel('view')} label="View Wallet Details" />
-                        <CreateButton onClick={() => {setError(''); setActivePanel('transaction');}} label="Transfer Money" />
+                        <CreateButton onClick={() => {setError(''); setSuccess(''); setActivePanel('transaction');}} label="Transfer Money" />
                         <CreateButton onClick={handleHistory} label="View Transaction Statement" />
                         <CreateButton onClick={() => navigate('/notifications')} label="Notifications" />
-                        <CreateButton onClick={() => {setNotData(null); setError(''); setActivePanel('single');}} label="View Specific Notification" />
-                        {admin_user==='True' && <CreateButton onClick={() => {setError(''); setActivePanel('update_wallet')}} label="Change Wallet Status" />}
-                        {admin_user==='True' && <CreateButton onClick={() => {setError(''); setActivePanel('create_notification')}} label="Send Notification" />}
+                        <CreateButton onClick={() => {setNotData(null); setError(''); setSuccess(''); setActivePanel('single');}} label="View Specific Notification" />
+                        {admin_user==='True' && <CreateButton onClick={() => {setError(''); setSuccess(''); setActivePanel('create_notification')}} label="Send Notification" />}
                         <CreateButton onClick={() => navigate('/home')} label="Back" />
                     </div>}
 
